@@ -1,4 +1,3 @@
-
 import cv2 as cv
 import keras
 import numpy as np
@@ -84,16 +83,17 @@ model = keras.models.load_model('trained_model.h5')
 
 # Define the list of class labels
 label_name = [
-    'Apple scab', 'Apple Black rot', 'Apple Cedar apple rust', 'Apple healthy',
-    'Cherry Powdery mildew', 'Cherry healthy', 'Corn Cercospora leaf spot Gray leaf spot',
-    'Corn Common rust', 'Corn Northern Leaf Blight', 'Corn healthy',
-    'Grape Black rot', 'Grape Esca', 'Grape Leaf blight', 'Grape healthy',
-    'Peach Bacterial spot', 'Peach healthy', 'Pepper bell Bacterial spot',
-    'Pepper bell healthy', 'Potato Early blight', 'Potato Late blight', 'Potato healthy',
-    'Strawberry Leaf scorch', 'Strawberry healthy', 'Tomato Bacterial spot',
-    'Tomato Early blight', 'Tomato Late blight', 'Tomato Leaf Mold',
-    'Tomato Septoria leaf spot', 'Tomato Spider mites', 'Tomato Target Spot',
-    'Tomato Yellow Leaf Curl Virus', 'Tomato mosaic virus', 'Tomato healthy'
+    'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
+    'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew', 'Cherry_(including_sour)___healthy',
+    'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_', 'Corn_(maize)___Northern_Leaf_Blight',
+    'Corn_(maize)___healthy', 'Grape___Black_rot', 'Grape___Esca_(Black_Measles)', 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)',
+    'Grape___healthy', 'Orange___Haunglongbing_(Citrus_greening)', 'Peach___Bacterial_spot', 'Peach___healthy',
+    'Pepper,_bell___Bacterial_spot', 'Pepper,_bell___healthy', 'Potato___Early_blight', 'Potato___Late_blight',
+    'Potato___healthy', 'Raspberry___healthy', 'Soybean___healthy', 'Squash___Powdery_mildew',
+    'Strawberry___Leaf_scorch', 'Strawberry___healthy', 'Tomato___Bacterial_spot', 'Tomato___Early_blight',
+    'Tomato___Late_blight', 'Tomato___Leaf_Mold', 'Tomato___Septoria_leaf_spot',
+    'Tomato___Spider_mites Two-spotted_spider_mite', 'Tomato___Target_Spot',
+    'Tomato___Tomato_Yellow_Leaf_Curl_Virus', 'Tomato___Tomato_mosaic_virus', 'Tomato___healthy'
 ]
 
 # File uploader for input images
@@ -111,13 +111,32 @@ if uploaded_file is not None:
     
     # Make a prediction
     predictions = model.predict(normalized_image)
-    confidence = predictions[0][np.argmax(predictions)] * 100
+    pred_index = np.argmax(predictions)
+    confidence = predictions[0][pred_index] * 100
     
-    # Display the result
-    if confidence >= 80:
-        st.success(f"✅ **Prediction:** {label_name[np.argmax(predictions)]} (Confidence: {confidence:.2f}%)")
+    # Display the result with error handling
+    def format_label(label):
+        # Remove plant name prefix and underscores, keep disease name readable
+        if '___' in label:
+            plant, disease = label.split('___', 1)
+            disease = disease.replace('_', ' ')
+            # Remove extra text in parentheses for clarity
+            disease = disease.replace('(', '').replace(')', '')
+            # Special handling for healthy
+            if disease.lower() == 'healthy':
+                return f"{plant} healthy"
+            else:
+                return f"{plant} {disease}"
+        else:
+            return label.replace('_', ' ')
+    if pred_index < len(label_name):
+        pretty_label = format_label(label_name[pred_index])
+        if confidence >= 80:
+            st.success(f"✅ **Prediction:** {pretty_label} (Confidence: {confidence:.2f}%)")
+        else:
+            st.warning("⚠️ The model is not confident in its prediction. Please try another image.")
     else:
-        st.warning("⚠️ The model is not confident in its prediction. Please try another image.")
+        st.error("❌ Prediction index out of range. Please check your model and label list.")
 else:
     st.image(
         "https://via.placeholder.com/500x300.png?text=Upload+Your+Leaf+Image+Here",

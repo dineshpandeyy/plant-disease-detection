@@ -53,13 +53,6 @@ if mode == "Dark Mode":
 else:
     st.markdown(LIGHT_MODE_CSS, unsafe_allow_html=True)
 
-# Add a header banner with a placeholder plant image
-st.image(
-    "https://via.placeholder.com/1000x300.png?text=Plant+Disease+Detection",
-    caption="🌱 Transforming Agriculture with AI",
-    use_container_width=True,
-)
-
 # Title and Description
 st.title("🌱 Plant Disease Detection")
 st.markdown(
@@ -138,8 +131,4 @@ if uploaded_file is not None:
     else:
         st.error("❌ Prediction index out of range. Please check your model and label list.")
 else:
-    st.image(
-        "https://via.placeholder.com/500x300.png?text=Upload+Your+Leaf+Image+Here",
-        caption="Upload a leaf image to start detecting diseases!",
-        use_container_width=True,
-    )
+    st.info("Upload a leaf image to start detecting diseases!")

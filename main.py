@@ -57,7 +57,7 @@ else:
 st.image(
     "https://via.placeholder.com/1000x300.png?text=Plant+Disease+Detection",
     caption="🌱 Transforming Agriculture with AI",
-    use_column_width=True,
+    use_container_width=True,
 )
 
 # Title and Description
@@ -107,7 +107,7 @@ if uploaded_file is not None:
     normalized_image = np.expand_dims(cv.resize(cv.cvtColor(img, cv.COLOR_BGR2RGB), (150, 150)), axis=0)
     
     # Display the uploaded image
-    st.image(image_bytes, caption="Uploaded Image", use_column_width=True)
+    st.image(image_bytes, caption="Uploaded Image", use_container_width=True)
     
     # Make a prediction
     predictions = model.predict(normalized_image)
@@ -141,5 +141,5 @@ else:
     st.image(
         "https://via.placeholder.com/500x300.png?text=Upload+Your+Leaf+Image+Here",
         caption="Upload a leaf image to start detecting diseases!",
-        use_column_width=True,
+        use_container_width=True,
     )

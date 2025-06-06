@@ -21,6 +21,13 @@ body {
 h1, h2, h3 {
     color: #2c3e50 !important;
 }
+p {
+    color: #000000 !important;
+}
+.stAlert, .st-emotion-cache-1wivap2 {
+    background-color: #fff !important;
+    color: #000 !important;
+}
 </style>
 """
 
@@ -58,7 +65,7 @@ st.title("🌱 Plant Disease Detection")
 st.markdown(
     """
     ### Welcome to Plant Disease Detection App
-    This tool uses cutting-edge **deep-learning techniques** to identify plant diseases 
+    This tool uses cutting-edge **deep-learning techniques to identify plant diseases 
     from leaf images. It's trained on a dataset featuring different plant diseases**, 
     ensuring accurate and reliable predictions.
     """

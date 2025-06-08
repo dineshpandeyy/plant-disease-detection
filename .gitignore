@@ -1,5 +1,9 @@
 venv/
-venv310/
 __pycache__/
+.DS_Store
 *.pyc
-.DS_Storevenv/
+*.pyo
+*.pyd
+*.swp
+*.bak
+*.tmp
